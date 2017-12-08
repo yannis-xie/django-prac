@@ -6,6 +6,6 @@ from . import views
 
 from django.conf import settings
 
-patterns = [
+urlpatterns = [
     url(r'^login/$', views.user_login, name = 'user_login'),
 ]
