@@ -11,7 +11,17 @@
             </ul>
             <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
                 {% if user.is_authenticated %}
-                <li><a href="#">{{user.username}}</a></li>
+                <li>
+                    <div class="dropdown" style="margin-top:8px">
+                        <button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenu' data-toggle='dropdown'>
+                            {{ user.username }} <span class='caret'></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'account:password_change' %}">Change Password</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- <li><a href="#">{{user.username}}</a></li> -->
                 <li><a href="{% url 'account:user_logout' %}">Logout</a></li>
                 {% else %}
                 <li><a href="{% url 'account:user_login' %}">LOGIN</a></li>
@@ -20,3 +30,10 @@
         </div>
     </nav>
 </div>
+
+<!--
+<script scr="{% static 'js/jquery.min.js' %}"></script>
+<script scr="{% static 'js/bootstrap.min.js' %}"></script>
+-->
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
