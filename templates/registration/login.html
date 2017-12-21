@@ -27,9 +27,9 @@
             <div class="col-md-6 text-left">{{form.password}}</div>
         </div>
         <input type="submit" class="btn btn-primary btn-lg" value="Login">
-
-
     </form>
+    <p style="margin-top:10px">Forgot your password? <a href="{% url 'account:password_reset' %}">Reset password</a></p>
+    <p stype="margin-top:10px">If you are not a user, <a href="{% url 'account:user_register' %}">register as an user</a>, please.</p>
 </div>
 
 {% endblock %}
