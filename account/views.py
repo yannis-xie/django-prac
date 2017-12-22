@@ -39,6 +39,7 @@ def register(request):
             new_profile = userprofile_form.save(commit = False)
             new_profile.user = new_user
             new_profile.save()
+            UserInfo.objects.create(user = new_user)
             return HttpResponse("Successfully")
         else:
             return HttpResponse("Sorry, you cannot register.")
@@ -49,3 +50,7 @@ def register(request):
 
 @login_required(login_url = '/account/login')
 def myself(request):
+    user = User.objects.get(username = request.user.username)
+    userprofile = UserProfile.objects.get(user = user)
+    userinfo = UserInfo.objects.get(user = user)
+    return render(request, 'account/myself.html', {'user':user, 'userinfo':userinfo, 'userprofile':userprofile})
