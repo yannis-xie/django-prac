@@ -33,7 +33,7 @@
             skin:"layui-layer-rim",
             area:["400px", "200px"],
             title: "Add Article",
-            content: '<div class="text-center" style="margin-top:20px"><p>Please enter article name</p><p><input type="text" id="new_column"></p></div>',
+            content: '<div class="text-center" style="margin-top:20px"><p>Please enter article name</p><p>{{column_form.column}}</p></div>',
             btn: ['Yes', 'Cancel'],
 
             /*
@@ -44,7 +44,7 @@
             */
 
             yes: function(index, layero){
-                column_name = $('#new_column').val();
+                column_name = $('#id_column').val();
                 $.ajax({
                     url:'{% url "article:article_column" %}',
                     type:'POST',
