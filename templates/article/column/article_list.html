@@ -18,9 +18,44 @@
             <td>{{forloop.counter}}</td>
             <td><a href="{{article.get_absolute_url}}">{{article.title}}</a></td>
             <td>{{article.column}}</td>
-            <td>--</td>
+            <td>
+                <span class="glyphicon glyphicon-pencil"></span>
+                <a name="delete" href="javascript:" onclick="del_article(this, {{article.id}})">
+                    <span class="glyphicon glyphicon-trash" style="margin-left:20px;"></span>
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </table>
 </div>
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+<script type="text/javascript">
+    function del_article(the, article_id){
+        var article_name = $(the).parents("tr").children("td").eq(1).text();
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "Delete Article",
+            content: '<div class="text-center" style="margin-top:20px"><p>Do you want to delete '+article_name+' ?</p></div>',
+            btn: ["Yes", "Cancel"],
+            yes: function(){
+                $.ajax({
+                    url: '{% url "article:del_article" %}',
+                    type: "POST",
+                    data: {"article_id":article_id},
+                    success: function(e){
+                        if(e=="1"){
+                            parent.location.reload();
+                            layer.msg("has been deleted.");
+                        }else{
+                            layer.msg("Delete Failed.");
+                        }
+                    },
+                })
+            },
+        });
+    }
+</script>
 {% endblock %}
