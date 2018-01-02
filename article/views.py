@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import ArticleColumn, ArticlePost
 from .forms import ArticleColumnForm, ArticlePostForm
@@ -120,3 +121,19 @@ def redit_article(request, article_id):
             return HttpResponse("1")
         except:
             return HttpResponse("2")
+
+@login_required(login_url = '/account/login')
+def article_list(request):
+    articles_list = ArticlePost.objects.filter(author = request.user)
+    paginator = Paginator(articles_list, 3)
+    page = request.GET.get('page')
+    try:
+        current_page = paginator.page(page)
+        articles = current_page.object_list
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+        articles = current_page.object_list
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+        articles = current_page.object_list
+    return render(request, 'article/column/article_list.html', {"articles":articles, "page":current_page})
