@@ -9,7 +9,7 @@
 <div class="cotainer">
     {% for article in articles %}
     <div class="list-group">
-        <a href="#" class="list-group-item active">
+        <a href="{{article.get_url_path}}" class="list-group-item active">
             <h4 class="list-group-item-heading">{{article.title}}</h4>
             <p class="list-group-item-text">Author: {{article.author.username}}</p>
             <p class="list-group-item-text">Brief Introduction: {{article.body|slice:'70'|linebreaks}}</p>
