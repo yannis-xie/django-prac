@@ -137,3 +137,7 @@ def article_list(request):
         current_page = paginator.page(paginator.num_pages)
         articles = current_page.object_list
     return render(request, 'article/column/article_list.html', {"articles":articles, "page":current_page})
+
+def article_detail(request, id, slug):
+    article = get_object_or_404(ArticlePost, id = id, slug = slug)
+    return render(request, 'article/list/article_detail.html', {'article':article})
