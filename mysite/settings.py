@@ -127,7 +127,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-LOGIN_REDIRECT_URL = '/blog/'
+LOGIN_REDIRECT_URL = '/home/'
 
 EMAIL_HOST = 'smtp.126.com'
 EMAIL_HOST_USER = 'yxie0822@126.com'
