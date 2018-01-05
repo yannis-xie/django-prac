@@ -15,12 +15,15 @@
             <a href="{% url 'article:author_articles' article.author.username %}">
                 {{article.author.username}}
             </a>
-            <span style="margin-left:20px" class="glyphicon glyphicoon-thums-up">
+            <span style="margin-left:20px" class="glyphicon glyphicon-thums-up">
                 {{total_likes}} like{{total_likes|pluralize}}</span>
+            <span style="margin-left:20px">{{total_views}} view{{total_views|pluralize}}</span>
         </p>
     </header>
 
     <link rel="stylesheet" href="{% static 'editor/css/editormd.preview.css' %}" />
+    <div class="container">
+    <div class="col-md-9">
     <div id="editormd-view">
         <textarea id="append-test" style="display:none;">
 {{ article.body }}
@@ -44,6 +47,53 @@
         {% empty %}
         <p class="text-center">No comment yet</p>
         {% endfor %}
+    </div>
+        <hr>
+        <div>
+            <h3>
+                <span class="glyphicon glyphicon-bullhorn"></span>
+                Article has {{article.comments.count}} comments
+            </h3>
+            {% for comment in article.comments.all %}
+            <div>
+                <p><strong>{{comment.commentator}}</strong>: </p>
+                <p style="margin-left:40px;">{{comment.body}}</p>
+            </div>
+            {% empty %}
+            <p>No comment yet.</p>
+            {% endfor %}
+            <h3><span class="glyphicon glyphicon-send"></span>Please add your comment below</h3>
+            <form action="." method="post" class="form-horizontal" role="form">{% csrf_token %}
+                <div class="form-group">
+                    <label for="imputEmail3" class="col-sm-2 control-label">Commentator</label>
+                    <div class="col-sm-10">
+                        {{comment_form.commentator}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="imputEmail3" class="col-sm-2 control-label">Comment</label>
+                    <div class="col-sm-10">
+                        {{comment_form.body}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <p><input type="submit" name="" value="Add" class="btn btn-primary"></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <p class="text-center"><h3>Most Popular</h3></p>
+        <ol>
+            {% for article_rank in most_viewed %}
+            <li>
+                <a href="{{article_rank.get_url_path}}">{{article_rank.title}}</a>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
     </div>
 </div>
 <script src="{% static 'js/jquery.js' %}"></script>
