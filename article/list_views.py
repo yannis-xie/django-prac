@@ -50,10 +50,10 @@ def like_article(request):
         try:
             article = ArticlePost.objects.get(id = article_id)
             if action == 'like':
-                article.user_like.add(request.user)
+                article.users_like.add(request.user)
                 return HttpResponse('1')
             else:
-                article.user_like.remove(request.user)
+                article.users_like.remove(request.user)
                 return HttpResponse('2')
         except:
             return HttpResponse('no')
