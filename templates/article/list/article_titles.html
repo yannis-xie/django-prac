@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
+{% load article_tags %}
+
 {% block title %}Article List{% endblock %}
 
 {% block content %}
 <div class="row text-center vertical-middle-sm">
     <h1>Reading enrich your brain</h1>
+    <p>There are {% total_articles %} articles for read</p>
 </div>
 <div class="cotainer">
     {% for article in articles %}
