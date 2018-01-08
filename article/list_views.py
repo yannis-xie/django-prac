@@ -37,7 +37,7 @@ def article_titles(request, username = None):
         articles = current_page.object_list
     if username:
         return render(request, 'article/list/author_articles.html', {'articles':articles, 'page':current_page,
-                                                                     'userinfo':userinfo})
+                                                                     'userinfo':userinfo, 'user':user})
     return render(request, 'article/list/article_titles.html', {'articles':articles, 'page':current_page})
 
 
