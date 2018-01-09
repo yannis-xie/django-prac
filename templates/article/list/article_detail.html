@@ -27,9 +27,7 @@
     <div class="container">
     <div class="col-md-9">
     <div id="editormd-view">
-        <textarea id="append-test" style="display:none;">
-{{ article.body }}
-        </textarea>
+{{ article.body | markdown }}
     </div>
     <div>
         <p class="text-center">
@@ -98,6 +96,16 @@
         <hr>
         <p class="text-center"><h3>Latest articles</h3></p>
         {% latest_articles 2 %}
+        <hr>
+        <p class="text-center"><h3>Most comments articles</h3></p>
+        {% most_commented_articles as most_comments %}
+        <ul>
+            {% for comment_article in most_comments %}
+            <li>
+                <a href="{{ comment_article.get_url_path }}">{{ comment_article.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
     </div>
 </div>
