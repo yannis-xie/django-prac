@@ -13,12 +13,13 @@ from .models import Image
 @csrf_exempt
 @require_POST
 def upload_image(request):
-    form = ImageForm(data = reqeust.POST)
+    form = ImageForm(data = request.POST)
     if form.is_valid():
         try:
             new_item = form.save(commit = False)
             new_item.user = request.user
             new_item.save()
+            print("Enter here 1")
             return JsonResponse({'status':"1"})
         except:
             return JsonResponse({'status':"0"})
@@ -26,4 +27,4 @@ def upload_image(request):
 @login_required(login_url = '/account/login')
 def list_images(request):
     images = Image.objects.filter(user = request.user)
-    return render(request, 'image/list_images.html', {'image':images})
+    return render(request, 'image/list_images.html', {'images':images})
