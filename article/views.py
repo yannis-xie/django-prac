@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import ArticleColumn, ArticlePost, ArticleTag
 from .forms import ArticleColumnForm, ArticlePostForm, ArticleTagForm
+import json
 
 # Create your views here.
 
@@ -65,6 +66,11 @@ def article_post(request):
                 new_article.author = request.user
                 new_article.column = request.user.article_column.get(id = request.POST['column_id'])
                 new_article.save()
+                tags = request.POST['tags']
+                if tags:
+                    for atag in json.loads(tags):
+                        tag = request.user.tag.get(tag = atag)
+                        new_article.article_tag.add(tag)
                 return HttpResponse('1')
             except:
                 return HttpResponse('2')
