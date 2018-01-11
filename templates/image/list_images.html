@@ -1,5 +1,7 @@
 {% extends "article/base.html" %}
 
+{% load thumbnail %}
+
 {% load staticfiles %}
 
 {% block title %}images{% endblock %}
@@ -19,7 +21,9 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ image.title }}</td>
-                <td>{{ image.image }}</td>
+                {% thumbnail image.image "50x50" as im %}
+                <td><img src="{{ im.url }}"></td>
+                {% endthumbnail %}
                 <td>
                     <a name="delete" href="javascript:" onclick="del_image(this, {{ image.id }})">
                         <span class="glyphicon glyphicon-trash" style="margin-left:20px;"></span>
@@ -66,6 +70,34 @@
                         },
                     });
                 });
+            },
+        });
+    }
+
+    function del_image(the, image_id){
+        var image_title = $(the).parents("tr").children("td").eq(1).text();
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "Delete image",
+            content: "<div class='text-center' style='margin-top:20px'><p>Do you want to delete "+image_title+"?</p></div>",
+            btn: ['Yes', 'Cancel'],
+            yes: function(){
+                $.ajax({
+                    url: '{% url "image:del_image" %}',
+                    type: "POST",
+                    data: {"image_id":image_id},
+                    success: function(e){
+                        var status = e['status']
+                        if(status == "1") {
+                            parent.location.reload();
+                            layer.msg("Image has been deleted.");
+                        } else{
+                            layer.msg("Delete failed");
+                        }
+                    },
+                })
             },
         });
     }
