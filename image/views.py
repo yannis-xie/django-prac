@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from .forms import ImageForm
 from .models import Image
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
@@ -27,7 +28,18 @@ def upload_image(request):
 @login_required(login_url = '/account/login')
 def list_images(request):
     images = Image.objects.filter(user = request.user)
-    return render(request, 'image/list_images.html', {'images':images})
+    paginator = Paginator(images, 2)
+    page = request.GET.get('page')
+    try:
+        current_page = paginator.page(page)
+        images = current_page.object_list
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+        images = current_page.object_list
+    except EmptyPage:
+        current_page = page(paginator.num_pages)
+        images = current_page.object_list
+    return render(request, 'image/list_images.html', {'images':images, 'page':current_page})
 
 @login_required(login_url = '/account/login')
 @csrf_exempt
